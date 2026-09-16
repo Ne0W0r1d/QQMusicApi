@@ -18,11 +18,12 @@ from .core.exceptions import (
     LoginRateLimitError,
     NetworkError,
     RatelimitedError,
+    TimeoutNetworkError,
 )
 from .core.versioning import Platform
 from .models.request import Credential
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
 __all__ = [
     "ApiDataError",
@@ -44,5 +45,6 @@ __all__ = [
     "NetworkError",
     "Platform",
     "RatelimitedError",
+    "TimeoutNetworkError",
     "__version__",
 ]
