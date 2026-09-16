@@ -310,18 +310,19 @@ class SingerApi(ApiModule):
             response_model=SimilarSingerResponse,
         )
 
-    def get_songs_list(self, mid: str, num: int = 10, page: int = 1):
+    def get_songs_list(self, mid: str, num: int = 10, page: int = 1, order: int = 1):
         """获取歌手的歌曲列表.
 
         Args:
             mid: 歌手 MID.
             num: 返回歌曲数量.
             page: 分页页码.
+            order: 排序方式. 1=按热度（热门歌曲）, 2=按发布时间倒序（最新发布）.
         """
         return self._build_cgi(
             module="musichall.song_list_server",
             method="GetSingerSongList",
-            param={"singerMid": mid, "order": 1, "number": num, "begin": (page - 1) * num},
+            param={"singerMid": mid, "order": order, "number": num, "begin": (page - 1) * num},
             response_model=SingerSongListResponse,
             pager_strategy=OffsetStrategy[SingerSongListResponse](
                 offset_key="begin",
@@ -331,18 +332,19 @@ class SingerApi(ApiModule):
             ),
         ).with_extractor(lambda response: response.song_list)
 
-    def get_album_list(self, mid: str, num: int = 10, page: int = 1):
+    def get_album_list(self, mid: str, num: int = 10, page: int = 1, order: int = 1):
         """获取歌手的专辑列表.
 
         Args:
             mid: 歌手 MID.
             num: 返回专辑数量.
             page: 分页页码.
+            order: 排序方式. 1=按热度, 2=按发布时间倒序.
         """
         return self._build_cgi(
             module="music.musichallAlbum.AlbumListServer",
             method="GetAlbumList",
-            param={"singerMid": mid, "order": 1, "number": num, "begin": (page - 1) * num},
+            param={"singerMid": mid, "order": order, "number": num, "begin": (page - 1) * num},
             response_model=SingerAlbumListResponse,
             pager_strategy=OffsetStrategy[SingerAlbumListResponse](
                 offset_key="begin",
